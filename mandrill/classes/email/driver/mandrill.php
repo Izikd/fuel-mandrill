@@ -35,7 +35,9 @@ class Email_Driver_Mandrill extends Email_Driver {
 	    'to' => array(),
 	    
 	    'auto_text' => \Config::get('mandrill.auto_text'),
-	    'preserve_recipients' => \Config::get('mandrill.preserve_recipients')
+	    'preserve_recipients' => \Config::get('mandrill.preserve_recipients'),
+	    
+	    'attachments' => array()
 	);
 	
 	$to = array_merge($this->to, $this->cc, $this->bcc);
@@ -47,9 +49,26 @@ class Email_Driver_Mandrill extends Email_Driver {
 	    );
 	}
 	
+	// Attachments
+	foreach ($this->attachments['attachment'] as &$file)
+	{
+	    $name = substr($file['cid'], 4); // remove cid
+	    
+	    $message_params['attachments'][] = array(
+		'type' => $file['mime'],
+		'name' => $name,
+		'content' => $file['contents']
+	    );
+	}
+		
 	$message->send($message_params, \Config::get('mandrill.async'));
 	
 	return true;
+    }
+    
+    public function attach($file, $inline = false, $cid = null, $mime = null)
+    {
+	return parent::attach($file, false, $cid, $mime);
     }
     
 }
