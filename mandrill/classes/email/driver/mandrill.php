@@ -7,6 +7,8 @@ namespace Email;
  */
 class Email_Driver_Mandrill extends Email_Driver {
 
+    private $merge_vars = array();
+
     public function __construct(array $config)
     {
 	parent::__construct($config);
@@ -37,7 +39,8 @@ class Email_Driver_Mandrill extends Email_Driver {
 	    'auto_text' => \Config::get('mandrill.auto_text'),
 	    'preserve_recipients' => \Config::get('mandrill.preserve_recipients'),
 	    
-	    'attachments' => array()
+	    'attachments' => array(),
+	    'merge_vars' => array()
 	);
 	
 	$to = array_merge($this->to, $this->cc, $this->bcc);
@@ -61,14 +64,42 @@ class Email_Driver_Mandrill extends Email_Driver {
 	    );
 	}
 		
+	// Merge Vars
+	foreach ($this->merge_vars as $email => &$vars)
+	{
+	    $email_vars = array();
+	    foreach ($vars as $key => $value)
+	    {
+		$email_vars[] = array(
+		    'name' => $key,
+		    'content' => $value
+		);
+	    }
+	    
+	    $message_params['merge_vars'][] = array(
+		'rcpt' => $email,
+		'vars' => $email_vars
+	    );
+	}
+		
 	$message->send($message_params, \Config::get('mandrill.async'));
 	
 	return true;
     }
     
-    public function attach($file, $inline = false, $cid = null, $mime = null)
+    public function attach($file, $inline = false, $cid = null, $mime = null, $name = null)
     {
-	return parent::attach($file, false, $cid, $mime);
+	parent::attach($file, false, $cid, $mime, $name);
+    }
+    
+    public function set_merge_var($email, $var_name, $value)
+    {
+	if (!isset($this->merge_vars[$email]))
+	{
+	    $this->merge_vars[$email] = array();
+	}
+
+	$this->merge_vars[$email][$var_name] = $value;
     }
     
 }
