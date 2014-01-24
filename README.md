@@ -20,36 +20,36 @@ Allows to send up to 12k free emails per month.
 
 2. Load `email` & `mandrill` packages in `config/config.php`:
 ``` php
-      'always_load'  => array(
-          'packages'  => array(
-              'email',
-              'mandrill'
-          )
-      )
+'always_load'  => array(
+    'packages'  => array(
+        'email',
+        'mandrill',
+    )
+)
 ```
 
 3. Edit your `config/email.php` file to use `mandrill` driver.
 ``` php
-      'driver' => 'mandrill'
+'driver' => 'mandrill'
 ```
 
 4. Copy `mandrill/config/mandrill.php` file to `config/` and enter your Mandrill API key.
 ``` php
-      'api_key' => 'your_api_key'
+'api_key' => 'your_api_key'
 ```
 
 ## Usage
 As you would send any email through FuelPHP.
 
 ``` php
-  $email = Email::forge();
+$email = Email::forge();
 
-  $email->from('my@email.me', 'My Name');
-  $email->to('receiver@elsewhere.co.uk', 'Johny Squid');
-  $email->subject('This is the subject');
-  $email->html_body(\View::forge('email/template', $email_data));
+$email->from('my@email.me', 'My Name');
+$email->to('receiver@elsewhere.co.uk', 'Johny Squid');
+$email->subject('This is the subject');
+$email->html_body(\View::forge('email/template', $email_data));
 
-  $email->send();
+$email->send();
 ```
 
 
