@@ -1,0 +1,10 @@
+{
+	"name": "izikd/fuel-mandrill",
+	"type": "fuel-package",
+	"description": "Fuel wrapper around Mandrill API",
+	"keywords": ["fuel", "mandrill"],
+	"require": {
+		"composer/installers": "~1.0",
+		"mandrill/mandrill": "1.0.50"
+	}
+}
