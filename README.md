@@ -13,7 +13,7 @@ Allows to send up to 12k free emails per month.
 ``` json
 {
     "require": {
-        "izikd/fuel-queue": "dev-master"
+        "izikd/fuel-mandrill": "dev-master"
     }
 }
 ```
